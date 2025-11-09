@@ -15,6 +15,17 @@ export default async function HomePage() {
 
   const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
 
+  // Get all posts (example of using Payload in a frontend page)
+  const posts = await payload.find({
+    collection: 'posts',
+  });
+
+  let postsList: string[] = [];
+  for (const post of posts.docs) {
+    postsList.push(post.title || 'No Title'
+    );
+  }
+
   return (
     <div className="home">
       <div className="content">
@@ -46,12 +57,27 @@ export default async function HomePage() {
           >
             Documentation
           </a>
+
+          <div className="posts">
+            <h2>Posts</h2>
+            {postsList.length > 0 ? (
+              <ul>
+                {postsList.map((title, index) => (
+                  <li key={index}>{title}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No posts found.</p>
+            )}
+          </div>
+
+          
         </div>
       </div>
       <div className="footer">
         <p>Update this page by editing</p>
         <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
+          <code>app/frontend/page.tsx</code>
         </a>
       </div>
     </div>
