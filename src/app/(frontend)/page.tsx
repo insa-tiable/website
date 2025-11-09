@@ -6,6 +6,7 @@ import React from 'react'
 import { fileURLToPath } from 'url'
 
 import config from '@/payload.config'
+import TopBar from './components/topBar'
 
 export default async function HomePage() {
   const headers = await getHeaders()
@@ -37,7 +38,10 @@ export default async function HomePage() {
   }
 
   return (
+
     <div className="home">
+
+        <TopBar/>
       <div className="content">
         {!user && <h1>Welcome to your new project.</h1>}
         {user && <h1>Welcome back, {user.email}</h1>}

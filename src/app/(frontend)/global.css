@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@theme {
+  --color-cbg: var(--color-amber-50);
+  --color-ttext: var(--color-amber-800);
+  --color-ctext: var(--color-amber-950);
+}
+
+
+h1 {
+    @apply text-4xl  my-5 text-center text-ttext;
+    font-family: "DM Serif Display", serif;   
+    
+}
+
+
+.section-title {
+    font-family: "DM Serif Display", serif;
+}
+
+img {
+    @apply rounded-lg
+}
+html {
+        font-family: "Work Sans", sans-serif;
+    font-variant-numeric: oldstyle-nums proportional-nums;
+    font-weight: 430;
+    @apply bg-cbg text-ctext;
+}
+
