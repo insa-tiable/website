@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     posts: Post;
+    tags: Tag;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -123,6 +125,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  role: 'admin' | 'editor' | 'viewer';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -167,6 +170,12 @@ export interface Media {
 export interface Post {
   id: number;
   title: string;
+  tags?: (number | Tag)[] | null;
+  url?: string | null;
+  author?: string | null;
+  published?: boolean | null;
+  bannerImage?: (number | null) | Media;
+  'published-date'?: string | null;
   content?: {
     root: {
       type: string;
@@ -182,6 +191,16 @@ export interface Post {
     };
     [k: string]: unknown;
   } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  category: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -220,6 +239,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: number | Tag;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -268,6 +291,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -309,7 +333,22 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
+  tags?: T;
+  url?: T;
+  author?: T;
+  published?: T;
+  bannerImage?: T;
+  'published-date'?: T;
   content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  category?: T;
   updatedAt?: T;
   createdAt?: T;
 }

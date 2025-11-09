@@ -48,11 +48,13 @@ This is the repository for the Insatiable website, built using Next JS and Tailw
 ## Locally Running PostgreSQL with Docker
 
 ```sh
-docker run --name insatiable-postgres -e POSTGRES_PASSWORD=test -d -p 5432:5432 postgres
+docker run --name insatiable-postgres -e POSTGRES_PASSWORD=test -d -p 5432:5432 postgres:17
 
 => postgres://postgres:test@127.0.0.1:5432/postgres
 ```
 
+> Remark: Make sure to use postgres version 17 or lower due to compatibility issues with PayloadCMS.
+> issue: [github.com/payloadcms/payload/issues/13963](https://github.com/payloadcms/payload/issues/13963)
 
 ## License
 

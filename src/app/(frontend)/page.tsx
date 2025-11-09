@@ -1,11 +1,11 @@
 import { headers as getHeaders } from 'next/headers.js'
+
 import Image from 'next/image'
 import { getPayload } from 'payload'
 import React from 'react'
 import { fileURLToPath } from 'url'
 
 import config from '@/payload.config'
-import './styles.css'
 
 export default async function HomePage() {
   const headers = await getHeaders()
@@ -18,26 +18,27 @@ export default async function HomePage() {
   // Get all posts (example of using Payload in a frontend page)
   const posts = await payload.find({
     collection: 'posts',
+    where: {
+      published: {
+        equals: true,
+      },
+    }
   });
 
-  let postsList: string[] = [];
+  let postsList: {
+    name: string, 
+    url: string }[] = [];
+
   for (const post of posts.docs) {
-    postsList.push(post.title || 'No Title'
+    postsList.push(
+      {name: post.title || 'No Title',
+        url: post.url || '#'}
     );
   }
 
   return (
     <div className="home">
       <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
         {!user && <h1>Welcome to your new project.</h1>}
         {user && <h1>Welcome back, {user.email}</h1>}
         <div className="links">
@@ -58,12 +59,16 @@ export default async function HomePage() {
             Documentation
           </a>
 
-          <div className="posts">
+                 
+        </div>
+   <div className="posts">
             <h2>Posts</h2>
             {postsList.length > 0 ? (
               <ul>
                 {postsList.map((title, index) => (
-                  <li key={index}>{title}</li>
+                  <li key={index}>
+                    <a href={`/posts/${title.url}`}>{title.name}</a>
+                  </li>
                 ))}
               </ul>
             ) : (
@@ -71,15 +76,9 @@ export default async function HomePage() {
             )}
           </div>
 
-          
-        </div>
+
       </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/frontend/page.tsx</code>
-        </a>
-      </div>
+      
     </div>
   )
 }
